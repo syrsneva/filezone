@@ -1,0 +1,77 @@
+import os
+import shutil
+
+class FileManager:
+    def __init__(self):
+        self.current_path = os.getcwd()
+    
+    def change_directory(self, path):
+        if os.path.exists(path) and os.path.isdir(path):
+            self.current_path = path
+            print(f'Current directory changed to: {self.current_path}')
+        else:
+            print(f'Directory "{path}" does not exist.')
+    
+    def list_files(self):
+        files = os.listdir(self.current_path)
+        print(f'Files in directory "{self.current_path}":')
+        for file in files:
+            print(file)
+    
+    def create_directory(self, directory_name):
+        directory_path = os.path.join(self.current_path, directory_name)
+        if not os.path.exists(directory_path):
+            os.mkdir(directory_path)
+            print(f'Directory "{directory_name}" created.')
+        else:
+            print(f'Directory "{directory_name}" already exists.')
+    
+    def delete_directory(self, directory_name):
+        directory_path = os.path.join(self.current_path, directory_name)
+        if os.path.exists(directory_path) and os.path.isdir(directory_path):
+            shutil.rmtree(directory_path)
+            print(f'Directory "{directory_name}" deleted.')
+        else:
+            print(f'Directory "{directory_name}" does not exist.')
+    
+    def copy_file(self, source_file, destination_file):
+        source_path = os.path.join(self.current_path, source_file)
+        destination_path = os.path.join(self.current_path, destination_file)
+        if os.path.exists(source_path) and os.path.isfile(source_path):
+            shutil.copy2(source_path, destination_path)
+            print(f'File "{source_file}" copied to "{destination_file}".')
+        else:
+            print(f'File "{source_file}" does not exist or is not a file.')
+    
+file_manager = FileManager()
+
+while True:
+    print('\nFile Manager')
+    print('1. Change directory')
+    print('2. List files')
+    print('3. Create directory')
+    print('4. Delete directory')
+    print('5. Copy file')
+    print('6. Exit')
+
+    choice = input('Select an option: ')
+
+    if choice == '1':
+        path = input('Enter the directory path: ')
+        file_manager.change_directory(path)
+    elif choice == '2':
+        file_manager.list_files()
+    elif choice == '3':
+        directory_name = input('Enter the directory name to create: ')
+        file_manager.create_directory(directory_name)
+    elif choice == '4':
+        directory_name = input('Enter the directory name to delete: ')
+        file_manager.delete_directory(directory_name)
+    elif choice == '5':
+        source_file = input('Enter the source file name: ')
+        destination_file = input('Enter the destination file name: ')
+        file_manager.copy_file(source_file, destination_file)
+    elif choice == '6':
+        break
+    else:
+        print('Invalid choice. Please try again.')
